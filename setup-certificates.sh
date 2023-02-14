@@ -13,7 +13,7 @@ printf "$CA_PASSWORD" > ca_passfile
 
 ./easyrsa init-pki
 printf "$CA_PASSWORD\n$CA_PASSWORD\nMARBEL Example CA\n" | ./easyrsa build-ca
-./easyrsa "--passout=pass:$MOSQUITTO_CERT_PASSWORD" "--passin=file:ca_passfile" build-client-full mqtt-broker
+./easyrsa "--passout=pass:$MOSQUITTO_CERT_PASSWORD" "--passin=file:ca_passfile" build-server-full mqtt-broker
 ./easyrsa "--passout=pass:$USER_CERT_PASSWORD" "--passin=file:ca_passfile" build-client-full python-example
 
 cp pki/ca.crt ../mosquitto/ca.pem
