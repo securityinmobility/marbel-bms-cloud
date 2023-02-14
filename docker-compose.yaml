@@ -3,7 +3,10 @@ services:
     mqtt-broker:
         image: eclipse-mosquitto:2
         volumes: 
-            - ./mosquitto/:/mosquitto/config/:ro
+            - ./mosquitto/:/mosquitto/config/
             - ./mosquitto-data:/mosquitto/data/
         ports:
-            - "1883:1883"
+            - "8883:8883"
+
+    mqtt-demo-client:
+        build: ./python-demo-client
