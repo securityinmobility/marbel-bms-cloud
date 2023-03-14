@@ -2,6 +2,8 @@
 
 set -euxo pipefail
 
+SERVERNAME="mqtt-broker"
+
 make-cadir certs
 cd certs
 
@@ -13,11 +15,11 @@ printf "$CA_PASSWORD" > ca_passfile
 
 ./easyrsa init-pki
 printf "$CA_PASSWORD\n$CA_PASSWORD\nMARBEL Example CA\n" | ./easyrsa build-ca
-./easyrsa "--passout=pass:$MOSQUITTO_CERT_PASSWORD" "--passin=file:ca_passfile" build-server-full mqtt-broker
+./easyrsa "--passout=pass:$MOSQUITTO_CERT_PASSWORD" "--passin=file:ca_passfile" build-server-full "$SERVERNAME"
 ./easyrsa "--passout=pass:$USER_CERT_PASSWORD" "--passin=file:ca_passfile" build-client-full python-example
 
 cp pki/ca.crt ../mosquitto/ca.pem
-cp pki/issued/mqtt-broker.crt ../mosquitto/cert.pem
+cp "pki/issued/$SERVERNAME.crt" ../mosquitto/cert.pem
 openssl pkey -in pki/private/mqtt-broker.key -out ../mosquitto/key.pem --passin "pass:$MOSQUITTO_CERT_PASSWORD"
 
 cp pki/ca.crt ../python-demo-client/ca.pem
